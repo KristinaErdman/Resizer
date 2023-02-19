@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "resizer"
+version = "0.1.0"
+description = ""
+authors = ["Kristina Tabunchik <tabunchik@doanddot.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "0.92.0"
+uvicorn = "0.20.0"
+python-dotenv = "0.21.1"
+python-multipart = "0.0.5"
+pillow = "9.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
