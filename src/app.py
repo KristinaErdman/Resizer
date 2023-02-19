@@ -1,10 +1,12 @@
 import os.path
+from shutil import make_archive
 from uuid import uuid4
 
-from PIL import Image
 from fastapi import FastAPI, File, UploadFile
 
+from .dto import ResizeParams
 from .settings import settings, root_dir
+from .utils import *
 
 app = FastAPI(
     debug=settings.debug,
@@ -22,14 +24,25 @@ async def root(fileb: UploadFile = File()):
     return {"Result": "OK"}
 
 
-@app.get('/resize/{filename}')
-def resize(filename: str):
+@app.post('/resize/{filename}')
+def resize(filename: str, resize_params: ResizeParams):
     file_path = os.path.join(media_path, filename)
+    filename, filetype = filename.split('.')  # TODO: fix for filename with .
+    dirname = os.path.join(media_path, filename)
+
+    try:
+        os.mkdir(dirname)
+    except FileExistsError:
+        pass
+
     image = Image.open(file_path)
-    image = image.resize((500, 100))
-    # (left, upper, right, lower) = (20, 20, 400, 400)
-    # image.thumbnail((400, 400))
-    # image = image.crop((left, upper, right, lower))
-    # image = image.filter(ImageFilter.DETAIL)
-    image.save(os.path.join(media_path, 'myimage_500.jpg'))
+    for size in resize_params.sizes:
+        if size.width == 0:
+            size.width = get_with(image, size.height)
+        if size.height == 0:
+            size.height = get_height(image, size.width)
+        resize_image_name = f'{filename}_{size.width}x{size.height}.{filetype}'
+        resize_image = image.resize((size.width, size.height))
+        resize_image.save(os.path.join(media_path, filename, resize_image_name))
+    make_archive(dirname, 'zip', dirname)
     return {"Result": "OK"}
