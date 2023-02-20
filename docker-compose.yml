@@ -1,0 +1,18 @@
+name: resizer
+
+services:
+  python:
+    container_name: backend-resizer_python_dev
+    hostname: python
+    env_file:
+      - .env
+    build:
+      target: dev
+    restart: always
+    volumes:
+      - ./:/resizer
+    command: uvicorn src.app:app --reload
+    ports:
+      - "8000:8000"
+
+
