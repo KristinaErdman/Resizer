@@ -1,11 +1,12 @@
-name: resizer
+name: resizer_backend
 
 services:
-  python:
-    container_name: backend-resizer_python_dev
-    hostname: python
+  fastapi:
+    container_name: fastapi_resizer_backend
+    hostname: fastapi
     env_file:
       - .env
+    image: resizer_fastapi_dev
     build:
       target: dev
     restart: unless-stopped
