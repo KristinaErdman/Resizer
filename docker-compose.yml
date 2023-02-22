@@ -8,7 +8,7 @@ services:
       - .env
     build:
       target: dev
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./:/resizer
     command: uvicorn src.app:app --reload
