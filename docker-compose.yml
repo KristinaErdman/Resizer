@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./:/resizer
-    command: uvicorn src.app:app --reload
+    command: uvicorn src.app:app --reload --host 0.0.0.0
     ports:
       - "8000:8000"
 
