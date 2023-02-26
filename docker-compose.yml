@@ -4,8 +4,9 @@ services:
   fastapi:
     container_name: fastapi_resizer_backend
     hostname: fastapi
-    env_file:
-      - .env
+    environment:
+      - DEBUG=True
+      - SERVER_PORT=8000
     image: resizer_fastapi_dev
     build:
       target: dev
