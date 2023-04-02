@@ -39,6 +39,7 @@ def resize(filename: str, resize_params: ResizeParams):
         pass
 
     image = Image.open(file_path)
+    image = save_source_orientation(image)
     for size in resize_params.sizes:
         if size.width == 0:
             size.width = get_with(image, size.height)
